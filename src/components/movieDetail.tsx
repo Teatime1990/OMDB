@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import styled from "styled-components";
-import { Search } from '../utilities/common';
+import { Search, Rating } from '../utilities/common';
 import { useGetMovieDetails } from '../hooks/getDataFromOMDbAPI';
 import { FaRegBookmark } from "react-icons/fa";
 
@@ -20,6 +20,7 @@ const MovieDetailContainer = styled.div`
 
         & > img {
             height: 400px;
+            width: 270px;
         }
 
         .btn {
@@ -46,7 +47,6 @@ const MovieDetailContainer = styled.div`
             }
     
             .info {
-                display: flex;
                 padding: 25px 0;
                 align-items: center;
     
@@ -54,11 +54,11 @@ const MovieDetailContainer = styled.div`
                     border: 1px solid #000000;
                     border-radius: 5px;
                     padding: 1px 10px;
+                    margin-right: 8px;
                 }
-    
-                .year,
-                .runtime {
-                    padding: 0 10px;
+
+                .dot {
+                    padding: 0 4px;
                 }
             }
         }
@@ -83,8 +83,7 @@ const MovieDetailContainer = styled.div`
             display: flex;
             flex-direction: column;
 
-            &:nth-child(2) {
-                border-left: 1px solid #666666;
+            &:not(:last-child) {
                 border-right: 1px solid #666666;
             }
 
@@ -106,7 +105,7 @@ const MovieDetail: FC<MovieDetailProps> = ({ movie }: MovieDetailProps) => {
     if ( error || details == undefined ) {
         return <div>No contents</div>
     }
-    console.log(details);
+
     return (
         <MovieDetailContainer>
                 {isLoading ? (
@@ -124,18 +123,14 @@ const MovieDetail: FC<MovieDetailProps> = ({ movie }: MovieDetailProps) => {
                                         {details.Title}
                                     </div>
                                     <div className='info'>
-                                        <div className='rated'>
+                                        <span className='rated'>
                                             {details.Rated}
-                                        </div>
-                                        <div className='year'>
-                                            {details.Year}
-                                        </div>
-                                        <div className='genre'>
-                                            {details.Genre}
-                                        </div>
-                                        <div className='runtime'>
-                                            {details.Runtime}
-                                        </div>
+                                        </span>
+                                        {details.Year}
+                                        <span className='dot'>&#183;</span>
+                                        {details.Genre}
+                                        <span className='dot'>&#183;</span>
+                                        {details.Runtime}
                                     </div>
                                     <div className='actors'>
                                         {details.Actors}
@@ -147,18 +142,14 @@ const MovieDetail: FC<MovieDetailProps> = ({ movie }: MovieDetailProps) => {
                             {details.Plot}
                         </div>
                         <div className='ratings'>
-                            <div className='item'>
-                                <span>{details.Ratings[0].Value}</span>
-                                <span className='sub-title'>{details.Ratings[0].Source}</span>
-                            </div>
-                            <div className='item'>
-                                <span>{details.Ratings[1].Value}</span>
-                                <span className='sub-title'>{details.Ratings[1].Source}</span>
-                            </div>
-                            <div className='item'>
-                                <span>{details.Ratings[2].Value}</span>
-                                <span className='sub-title'>{details.Ratings[2].Source}</span>
-                            </div>
+                            {details.Ratings.map(r => {
+                                return (
+                                    <div className='item'>
+                                        <span>{r.Value}</span>
+                                        <span className='sub-title'>{r.Source}</span>
+                                    </div>
+                                )
+                            })}
                         </div>
                     </div>
                 )}

@@ -19,7 +19,7 @@ export type OMDBResults = {
   totalResults: number,
 }
 
-type Rating = {
+export type Rating = {
   Source: string,
   Value: string,
 }
