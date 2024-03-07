@@ -1,8 +1,9 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import styled from "styled-components";
-import { Search, Rating } from '../utilities/common';
+import { Search } from '../utilities/common';
 import { useGetMovieDetails } from '../hooks/getDataFromOMDbAPI';
 import { FaRegBookmark } from "react-icons/fa";
+import { FcBookmark } from "react-icons/fc";
 
 const MovieDetailContainer = styled.div`
     padding: 20px 0 20px 40px;
@@ -102,6 +103,18 @@ type MovieDetailProps = {
 const MovieDetail: FC<MovieDetailProps> = ({ movie }: MovieDetailProps) => {
     const {isLoading, error, details} = useGetMovieDetails(movie.imdbID);
 
+    const [watchlist, setWatchlist] = useState<Array<string>>([]);
+    const isSaved = watchlist.includes(movie.imdbID);
+    const handleWatchlist = (movieId: string) => {
+        if(isSaved) {
+            const updatedWatchlist = watchlist.filter(id => id !== movieId);
+            setWatchlist(updatedWatchlist);
+        } else {
+            setWatchlist([...watchlist, movieId]);
+        }
+        console.log(watchlist);
+    };
+
     if ( error || details == undefined ) {
         return <div>No contents</div>
     }
@@ -116,7 +129,9 @@ const MovieDetail: FC<MovieDetailProps> = ({ movie }: MovieDetailProps) => {
                             <img src={details.Poster} />
                             <div className='details-right-side'>
                                 <div className='btn'>
-                                    <button><FaRegBookmark />Watchlist</button>
+                                    <button onClick={() => handleWatchlist(details.imdbID)}>
+                                        {isSaved ? <FcBookmark /> : <FaRegBookmark /> }Watchlist
+                                    </button>
                                 </div>
                                 <div className='detail-section'>
                                     <div className='title'>
