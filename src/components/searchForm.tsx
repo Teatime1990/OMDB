@@ -1,23 +1,21 @@
 import React, { FC, useState } from 'react';
-import { useMovieSearchResults } from '../utilities/getDataFromOMDbAPI';
+import { useMovieSearchResults } from '../hooks/getDataFromOMDbAPI';
 import styled from "styled-components";
+import SearchBar from "../components/searchBar"
 
 const SearchFromContainer = styled.div`
     display: block;
 `;
 
 const SearchForm: FC = () => {
+    
     const [searchText, setSearchText] = useState<string>('');
-    const [isLoading, error, data] = useMovieSearchResults('tt3896198');
+    const [searchYears, setSearchYears] = useState<Array<number>>([1940, 2015]);
+    const [searchType, setSearchType] = useState<string>('');
+    const [isLoading, error, data] = useMovieSearchResults(searchText, searchType, searchYears);
     console.log(data);
 
-    if(isLoading) {
-        return (
-            <div>
-                <span>isLoading</span>
-            </div>
-        )
-    } else if (error) {
+    if (error) {
         return (
             <div>
                 <span>Can not get data</span>
@@ -26,7 +24,11 @@ const SearchForm: FC = () => {
     }
     return (
         <SearchFromContainer>
-            <span>initi</span>
+            <SearchBar searchText={searchText} searchTextOnChange={setSearchText} 
+                       searchYears={searchYears} setSearchYears={setSearchYears} 
+                       searchType={searchType} searchTypeOnChange={setSearchType}
+                       isLoading={isLoading}/>
+
         </SearchFromContainer>
     );
 };
