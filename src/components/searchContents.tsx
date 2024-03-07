@@ -68,10 +68,10 @@ const SearchContents: FC<SearchContentsProps> = ({ results }: SearchContentsProp
             <div className="movies-list-container">
                 <div className="movies-list">
                     <div className='total-result'>{contentsData?.totalResults ?? 0} RESULTS</div>
-                    {contentsData != undefined && contentsData.Search?.length > 0 ? (
+                    {contentsData !== undefined && contentsData.Search?.length > 0 ? (
                         contentsData.Search.map((o) => (
                             <div key={o.imdbID} onClick={() => handleMovieSelection(o)} 
-                                className={o.imdbID == selectedMovie?.imdbID ? 'selected item' : 'item'}>
+                                className={o.imdbID === selectedMovie?.imdbID ? 'selected item' : 'item'}>
                                 <MovieThumbnail movie={o}></MovieThumbnail>
                             </div>
                         ))

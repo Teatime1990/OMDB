@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import styled from "styled-components";
 import { Search } from '../utilities/common';
 
@@ -40,7 +40,7 @@ const MovieThumbnail: FC<MovieThumbnailProps> = ({ movie }: MovieThumbnailProps)
     return (
         <MovieThumbnailContainer>
             <div>
-                <img src={movie.Poster} />
+                <img alt={movie.Title} src={movie.Poster} />
             </div>
             <div className='movie-name'>
 

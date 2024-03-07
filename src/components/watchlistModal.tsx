@@ -60,10 +60,11 @@ export type WatchlistModalProps = {
 
 
 const WatchlistModal: FC<WatchlistModalProps> = ({movieId, movieTitle, setShowCancelModal, watchlist, handleWatchlist, isSaved}: WatchlistModalProps) => {
+    
     const onClose = () => {
         setShowCancelModal(false);
     };
-    console.log('watchlist', watchlist);
+    //Display current watchlist, Add or delete current movie.
     return (
         <WatchlistModalContainer>
             <DefaultBtn>

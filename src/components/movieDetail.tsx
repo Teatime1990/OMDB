@@ -92,7 +92,7 @@ const MovieDetail: FC<MovieDetailProps> = ({ movie }: MovieDetailProps) => {
     
     const {isLoading, error, details} = useGetMovieDetails(movie.imdbID);
     const [watchlist, setWatchlist] = useState<Array<MovieIDAndTitle>>([]);
-    const isSaved = watchlist.some(i => i.MovieId == movie.imdbID);
+    const isSaved = watchlist.some(i => i.MovieId === movie.imdbID);
 
     const [showCancelModal, setShowCancelModal] = useState(false);
     
@@ -106,7 +106,7 @@ const MovieDetail: FC<MovieDetailProps> = ({ movie }: MovieDetailProps) => {
         }
     };
 
-    if ( error || details == undefined ) {
+    if ( error || details === undefined ) {
         return <div>No contents</div>
     }
 
@@ -118,7 +118,7 @@ const MovieDetail: FC<MovieDetailProps> = ({ movie }: MovieDetailProps) => {
                     <Fragment>
                         <div className='section'>
                             <div className='details'>
-                                <img src={details.Poster} />
+                                <img alt={details.Title} src={details.Poster} />
                                 <div className='details-right-side'>
                                     <DefaultBtn className='btn'>
                                         <button onClick={() => setShowCancelModal(true)}>

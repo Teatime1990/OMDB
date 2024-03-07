@@ -21,7 +21,7 @@ export const useMovieSearchResults = (title: string, searchType: string, searchY
             setIsLoading(true);
             setError(undefined);
             const url = `http://www.omdbapi.com/?s=${title.replace(/ /g, '+')}&apikey=${API_KEY}&type=${searchType}&y=${searchYears[0]}-${searchYears[1]}`;
-            console.log(url);
+
             try {
                 const response = await axios.get(url);
                 setSearchResults(response.data);
@@ -61,7 +61,7 @@ export const useGetMovieDetails = (obmdID: string): MovieDetailsProps => {
             setIsLoading(true);
             setError(undefined);
             const url = `http://www.omdbapi.com/?i=${obmdID}&apikey=${API_KEY}`;
-            console.log(url);
+
             try {
                 const response = await axios.get(url);
                 setDetails(response.data);
