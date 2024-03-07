@@ -22,6 +22,7 @@ const SearchForm: FC = () => {
             </div>
         )
     }
+    
     return (
         <SearchFromContainer>
             <SearchBar searchText={searchText} searchTextOnChange={setSearchText} 

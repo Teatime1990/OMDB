@@ -55,9 +55,9 @@ type SearchContentsProps = {
 }
 
 const SearchContents: FC<SearchContentsProps> = ({ results }: SearchContentsProps) => {
+
     const [selectedMovie, setSelectedMovie] = useState<Search>();
     const contentsData = results;
-    console.log('te', contentsData);
 
   const handleMovieSelection = (selected: Search) => {
     setSelectedMovie(selected);

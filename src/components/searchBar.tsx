@@ -57,6 +57,7 @@ type Props = SearchYearRangeProps & SearchBarProps & SearchTypeProps;
 
 
 const SearchBar: FC<Props> = ({ searchText, searchTextOnChange, searchYears, setSearchYears, searchType, searchTypeOnChange, isLoading }: Props) => {
+
     const onSearchTextChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         searchTextOnChange(e.target.value);
     };

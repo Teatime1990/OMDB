@@ -13,6 +13,7 @@ export type Search = {
   imdbID: string,
 }
 
+// type from movie OMDBResults
 export type OMDBResults = {
   Response: boolean,
   Search: Array<Search>,
@@ -24,6 +25,7 @@ export type Rating = {
   Value: string,
 }
 
+// type from movie details
 export type MovieDetails = {
   Actors: string,
   Awards: string,
@@ -50,4 +52,9 @@ export type MovieDetails = {
   imdbID: string,
   imdbRating: string,
   imdbVotes: number,
+}
+
+export type MovieIDAndTitle = {
+  MovieId: string;
+  Title: string;
 }

@@ -10,6 +10,7 @@ type MovieSearchResultsType = {
     omdbResults: OMDBResults | undefined;
 };
 
+// get data from search
 export const useMovieSearchResults = (title: string, searchType: string, searchYears: Array<number>): MovieSearchResultsType => {
     const [searchResults, setSearchResults] = useState<OMDBResults>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -49,6 +50,7 @@ type MovieDetailsProps = {
     details: MovieDetails | undefined;
 };
 
+// get details based on ID
 export const useGetMovieDetails = (obmdID: string): MovieDetailsProps => {
     const [details, setDetails] = useState<MovieDetails>();
     const [isLoading, setIsLoading] = useState<boolean>(false);

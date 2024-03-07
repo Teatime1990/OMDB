@@ -1,9 +1,11 @@
-import React, { FC, useState } from 'react';
+import React, { FC, Fragment, useState } from 'react';
 import styled from "styled-components";
-import { Search } from '../utilities/common';
+import { Search, MovieIDAndTitle } from '../utilities/common';
 import { useGetMovieDetails } from '../hooks/getDataFromOMDbAPI';
 import { FaRegBookmark } from "react-icons/fa";
 import { FcBookmark } from "react-icons/fc";
+import WatchlistModal from './watchlistModal';
+import { DefaultBtn } from '../utilities/styles';
 
 const MovieDetailContainer = styled.div`
     padding: 20px 0 20px 40px;
@@ -24,21 +26,7 @@ const MovieDetailContainer = styled.div`
             width: 270px;
         }
 
-        .btn {
-            button {
-                padding: 14px;
-                background: transparent;
-                border-radius: 5px;
-                font-weight: 600;
-                display: flex;
-                margin-left: auto;
-                font-size: 16px;
-
-                svg {
-                    padding-right: 16px;
-                }
-            }
-        }
+        
 
         .detail-section {
             margin-top: auto;
@@ -101,18 +89,21 @@ type MovieDetailProps = {
 }
 
 const MovieDetail: FC<MovieDetailProps> = ({ movie }: MovieDetailProps) => {
+    
     const {isLoading, error, details} = useGetMovieDetails(movie.imdbID);
+    const [watchlist, setWatchlist] = useState<Array<MovieIDAndTitle>>([]);
+    const isSaved = watchlist.some(i => i.MovieId == movie.imdbID);
 
-    const [watchlist, setWatchlist] = useState<Array<string>>([]);
-    const isSaved = watchlist.includes(movie.imdbID);
-    const handleWatchlist = (movieId: string) => {
+    const [showCancelModal, setShowCancelModal] = useState(false);
+    
+    const handleWatchlist = (movieId: string, movieTitle: string) => {
         if(isSaved) {
-            const updatedWatchlist = watchlist.filter(id => id !== movieId);
+            const updatedWatchlist = watchlist.filter(id => id.MovieId !== movieId);
             setWatchlist(updatedWatchlist);
         } else {
-            setWatchlist([...watchlist, movieId]);
+            const updatedWatchlist = [...watchlist, {MovieId: movieId, Title: movieTitle}];
+            setWatchlist(updatedWatchlist);
         }
-        console.log(watchlist);
     };
 
     if ( error || details == undefined ) {
@@ -124,49 +115,61 @@ const MovieDetail: FC<MovieDetailProps> = ({ movie }: MovieDetailProps) => {
                 {isLoading ? (
                     <span>Loading</span>
                 ) : (
-                    <div className='section'>
-                        <div className='details'>
-                            <img src={details.Poster} />
-                            <div className='details-right-side'>
-                                <div className='btn'>
-                                    <button onClick={() => handleWatchlist(details.imdbID)}>
-                                        {isSaved ? <FcBookmark /> : <FaRegBookmark /> }Watchlist
-                                    </button>
-                                </div>
-                                <div className='detail-section'>
-                                    <div className='title'>
-                                        {details.Title}
-                                    </div>
-                                    <div className='info'>
-                                        <span className='rated'>
-                                            {details.Rated}
-                                        </span>
-                                        {details.Year}
-                                        <span className='dot'>&#183;</span>
-                                        {details.Genre}
-                                        <span className='dot'>&#183;</span>
-                                        {details.Runtime}
-                                    </div>
-                                    <div className='actors'>
-                                        {details.Actors}
+                    <Fragment>
+                        <div className='section'>
+                            <div className='details'>
+                                <img src={details.Poster} />
+                                <div className='details-right-side'>
+                                    <DefaultBtn className='btn'>
+                                        <button onClick={() => setShowCancelModal(true)}>
+                                            {isSaved ? <FcBookmark /> : <FaRegBookmark /> }Watchlist
+                                        </button>
+                                    </DefaultBtn>
+                                    <div className='detail-section'>
+                                        <div className='title'>
+                                            {details.Title}
+                                        </div>
+                                        <div className='info'>
+                                            <span className='rated'>
+                                                {details.Rated}
+                                            </span>
+                                            {details.Year}
+                                            <span className='dot'>&#183;</span>
+                                            {details.Genre}
+                                            <span className='dot'>&#183;</span>
+                                            {details.Runtime}
+                                        </div>
+                                        <div className='actors'>
+                                            {details.Actors}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <div className='description'>
+                                {details.Plot}
+                            </div>
+                            <div className='ratings'>
+                                {details.Ratings.map(r => {
+                                    return (
+                                        <div className='item'>
+                                            <span>{r.Value}</span>
+                                            <span className='sub-title'>{r.Source}</span>
+                                        </div>
+                                    )
+                                })}
+                            </div>
                         </div>
-                        <div className='description'>
-                            {details.Plot}
-                        </div>
-                        <div className='ratings'>
-                            {details.Ratings.map(r => {
-                                return (
-                                    <div className='item'>
-                                        <span>{r.Value}</span>
-                                        <span className='sub-title'>{r.Source}</span>
-                                    </div>
-                                )
-                            })}
-                        </div>
-                    </div>
+                        {showCancelModal ? (
+                            <WatchlistModal
+                                movieId={details.imdbID}
+                                movieTitle={details.Title}
+                                setShowCancelModal={setShowCancelModal}
+                                watchlist={watchlist}
+                                handleWatchlist={handleWatchlist}
+                                isSaved={isSaved}
+                            />
+                        ) : null}
+                    </Fragment>
                 )}
         </MovieDetailContainer>
     );

@@ -10,3 +10,19 @@ export const DefaultContainer = styled.div`
         font-weight: normal;
     }
 `;
+
+export const DefaultBtn = styled.div`
+    button {
+        padding: 14px;
+        background: transparent;
+        border-radius: 5px;
+        font-weight: 600;
+        display: flex;
+        margin-left: auto;
+        font-size: 16px;
+
+        svg {
+            padding-right: 16px;
+        }
+    }
+`
