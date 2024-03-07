@@ -5,7 +5,7 @@ import { OMDBTYPE } from "../utilities/common";
 
 const SearchRadioContainer = styled(DefaultContainer)`
     flex: 0 0 30%;
-    padding-left: 30px;
+    padding-left: 40px;
 
     .ratio-options {
         align-items: center;
@@ -48,7 +48,7 @@ const SearchRadioContainer = styled(DefaultContainer)`
             display: flex;
             
             & > span {
-                padding: 1px 10px 0 10px;
+                padding: 0 10px 1px 10px;
             }
         }
     }

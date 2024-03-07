@@ -1,9 +1,9 @@
 import React, { FC, Fragment } from 'react';
 import styled from "styled-components";
-import { SearchYearRangeProps } from "../utilities/scrollbarYearRange";
-import ScrollbarYearRange from "../utilities/scrollbarYearRange";
-import { SearchTypeProps } from "../utilities/searchRadio";
-import SearchRadio from "../utilities/searchRadio";
+import { SearchYearRangeProps } from "./scrollbarYearRange";
+import ScrollbarYearRange from "./scrollbarYearRange";
+import { SearchTypeProps } from "./searchRadio";
+import SearchRadio from "./searchRadio";
 import { SlMagnifier } from "react-icons/sl";
 
 const SearchBarContainer = styled.div`
