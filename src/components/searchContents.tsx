@@ -71,32 +71,31 @@ type SearchContentsProps = {
 
 const SearchContents: FC<SearchContentsProps> = ({ results, searchYears, page, setPage }: SearchContentsProps) => {
     const [selectedMovie, setSelectedMovie] = useState<Search>();
-    const filteredContetsData = useMemo(() => {
+    const {filteredContetsData, totalNumber} = useMemo(() => {
          let filteredResults = results.Search.filter(r => searchYears[0] <= parseInt(r.Year) && parseInt(r.Year) <= searchYears[1]);
-        return filteredResults;
+        return {filteredContetsData: filteredResults, totalNumber: filteredResults.length};
     }, [searchYears, results]);
 
     const handleMovieSelection = (selected: Search) => {
         setSelectedMovie(selected);
     };
 
-    const handlePage = (mode: string, targetPage?: number) => {
+    const handlePage = (mode: string) => {
         switch (mode) {
             case HANDLEPAGE.Previous:
                 setPage(page > 1 ? page - 1 : page);
                 break;
             case HANDLEPAGE.Next:
-                setPage(page <= 100 ? page + 1 : page);
+                setPage(page < Math.ceil(results.totalResults/10) ? page + 1 : page);
                 break;
         }
-            
     };
 
     return (
         <SearchContentsContainer>
             <div className="movies-list-container">
                 <div className="movies-list">
-                    <div className='total-result'>{results.totalResults ?? 0} RESULTS</div>
+                    <div className='total-result'>{totalNumber ?? 0} RESULTS</div>
                     {results.totalResults > 0 ? (
                         <Fragment>
                             {
