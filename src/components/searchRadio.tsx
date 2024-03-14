@@ -57,13 +57,15 @@ const SearchRadioContainer = styled(DefaultContainer)`
 export type SearchTypeProps = {
     searchType: string;
     searchTypeOnChange: (Type: string) => void;
+    setPage: (page: number) => void;
 }
 
 
-const SearchRadio: FC<SearchTypeProps> = ({searchType, searchTypeOnChange}: SearchTypeProps) => {
+const SearchRadio: FC<SearchTypeProps> = ({searchType, searchTypeOnChange, setPage}: SearchTypeProps) => {
 
   const handleOptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     searchTypeOnChange(e.target.value);
+    setPage(1);
   };
 
     return (

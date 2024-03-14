@@ -32,7 +32,8 @@ const SearchForm: FC = () => {
         <SearchFromContainer>
             <SearchBar searchText={searchText} searchTextOnChange={setSearchText} 
                        searchYears={searchYears} setSearchYears={setSearchYears} 
-                       searchType={searchType} searchTypeOnChange={setSearchType} />
+                       searchType={searchType} searchTypeOnChange={setSearchType}
+                       setPage={setPage} />
             {omdbResults?.Search !== undefined ? (
                 <SearchContents results={omdbResults} searchYears={searchYears} page={page} setPage={setPage}/>
             ) : (
