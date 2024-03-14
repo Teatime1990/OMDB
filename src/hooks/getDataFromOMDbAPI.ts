@@ -11,7 +11,7 @@ type MovieSearchResultsType = {
 };
 
 // get data from search
-export const useMovieSearchResults = (title: string, searchType: string, searchYears: Array<number>): MovieSearchResultsType => {
+export const useMovieSearchResults = (title: string, searchType: string, searchYears: Array<number>, page: number): MovieSearchResultsType => {
     const [searchResults, setSearchResults] = useState<OMDBResults>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | undefined>(undefined);
@@ -20,7 +20,7 @@ export const useMovieSearchResults = (title: string, searchType: string, searchY
         const fetchData = async () => {
             setIsLoading(true);
             setError(undefined);
-            const url = `http://www.omdbapi.com/?s=${title.replace(/ /g, '+')}&apikey=${API_KEY}&type=${searchType}&y=${searchYears[0]}-${searchYears[1]}`;
+            const url = `http://www.omdbapi.com/?s=${title.replace(/ /g, '+')}&apikey=${API_KEY}&type=${searchType}&page=${page}`;
 
             try {
                 const response = await axios.get(url);
@@ -35,11 +35,11 @@ export const useMovieSearchResults = (title: string, searchType: string, searchY
 
         const delayDebounceFn = setTimeout(() => {
             fetchData();
-          }, 3000)
+          }, 500)
         
         return () => clearTimeout(delayDebounceFn);
         
-    }, [title, searchType, searchYears]);
+    }, [title, searchType, searchYears, page]);
 
     return {isLoading, error, omdbResults: searchResults};
 }

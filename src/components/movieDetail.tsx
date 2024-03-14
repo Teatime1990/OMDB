@@ -1,6 +1,6 @@
 import React, { FC, Fragment, useState } from 'react';
 import styled from "styled-components";
-import { Search, MovieIDAndTitle } from '../utilities/common';
+import { Search, MovieIDAndTitle, movieURL } from '../utilities/common';
 import { useGetMovieDetails } from '../hooks/getDataFromOMDbAPI';
 import { FaRegBookmark } from "react-icons/fa";
 import { FcBookmark } from "react-icons/fc";
@@ -8,7 +8,7 @@ import WatchlistModal from './watchlistModal';
 import { DefaultBtn } from '../utilities/styles';
 
 const MovieDetailContainer = styled.div`
-    padding: 20px 0 20px 40px;
+    padding: 20px 0 0 40px;
 
     .details {
         display: flex;
@@ -25,8 +25,6 @@ const MovieDetailContainer = styled.div`
             height: 400px;
             width: 270px;
         }
-
-        
 
         .detail-section {
             margin-top: auto;
@@ -118,7 +116,7 @@ const MovieDetail: FC<MovieDetailProps> = ({ movie }: MovieDetailProps) => {
                     <Fragment>
                         <div className='section'>
                             <div className='details'>
-                                <img alt={details.Title} src={details.Poster} />
+                                <img alt={details.Title} src={movieURL(details.Poster)} />
                                 <div className='details-right-side'>
                                     <DefaultBtn className='btn'>
                                         <button onClick={() => setShowCancelModal(true)}>
@@ -151,7 +149,7 @@ const MovieDetail: FC<MovieDetailProps> = ({ movie }: MovieDetailProps) => {
                             <div className='ratings'>
                                 {details.Ratings.map(r => {
                                     return (
-                                        <div className='item'>
+                                        <div key={r.Source} className='item'>
                                             <span>{r.Value}</span>
                                             <span className='sub-title'>{r.Source}</span>
                                         </div>

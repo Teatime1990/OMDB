@@ -1,9 +1,11 @@
+import imgPlaceholder from '../images/movie-img-placeholder.png';
+
 export enum OMDBTYPE {
     Movies = 'movies',
     Series = 'series',
     Episodes = 'episodes',
     Any = '',
-  }
+}
 
 export type Search = {
   Poster: string,
@@ -57,4 +59,13 @@ export type MovieDetails = {
 export type MovieIDAndTitle = {
   MovieId: string;
   Title: string;
+}
+
+export function movieURL(url: string): string {
+    return url != 'N/A' ? url : imgPlaceholder;
+}
+
+export enum HANDLEPAGE {
+  Previous = 'previous',
+  Next = 'next',
 }

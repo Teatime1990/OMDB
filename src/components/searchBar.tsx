@@ -50,13 +50,12 @@ const SearchBarContainer = styled.div`
 type SearchBarProps = {
     searchText: string;
     searchTextOnChange: (text: string) => void;
-    isLoading: boolean;
 }
 
 type Props = SearchYearRangeProps & SearchBarProps & SearchTypeProps;
 
 
-const SearchBar: FC<Props> = ({ searchText, searchTextOnChange, searchYears, setSearchYears, searchType, searchTypeOnChange, isLoading }: Props) => {
+const SearchBar: FC<Props> = ({ searchText, searchTextOnChange, searchYears, setSearchYears, searchType, searchTypeOnChange }: Props) => {
 
     const onSearchTextChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         searchTextOnChange(e.target.value);
@@ -66,21 +65,14 @@ const SearchBar: FC<Props> = ({ searchText, searchTextOnChange, searchYears, set
         <SearchBarContainer>
             <div className='searchBar'>
                 <div className='input-text'>
-                    {isLoading ? (
-                        <span>Loading</span>
-                    ) : (
-                        <Fragment>
-                            <SlMagnifier />
-                            <input
-                                type="text"
-                                placeholder="Type Movie "
-                                value={searchText}
-                                className="search-text-input"
-                                onChange={onSearchTextChange}
-                            />
-                        </Fragment>
-                    )}
-                    
+                    <SlMagnifier />
+                    <input
+                        type="text"
+                        placeholder="Type Movie "
+                        value={searchText}
+                        className="search-text-input"
+                        onChange={onSearchTextChange}
+                    />
                 </div>
                 <ScrollbarYearRange searchYears={searchYears} setSearchYears={setSearchYears} />
                 <SearchRadio searchType={searchType} searchTypeOnChange={searchTypeOnChange} />

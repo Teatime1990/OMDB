@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import styled from "styled-components";
-import { Search } from '../utilities/common';
+import { Search, movieURL } from '../utilities/common';
 
 const MovieThumbnailContainer = styled.div`
     padding: 35px 40px;
@@ -40,7 +40,7 @@ const MovieThumbnail: FC<MovieThumbnailProps> = ({ movie }: MovieThumbnailProps)
     return (
         <MovieThumbnailContainer>
             <div>
-                <img alt={movie.Title} src={movie.Poster} />
+                <img alt={movie.Title} src={movieURL(movie.Poster)} />
             </div>
             <div className='movie-name'>
 

@@ -1,8 +1,9 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useMemo, Fragment } from 'react';
 import styled from "styled-components";
-import { OMDBResults, Search } from '../utilities/common';
+import { OMDBResults, Search, HANDLEPAGE } from '../utilities/common';
 import MovieThumbnail from '../components/movieThumbnail';
 import MovieDetail from '../components/movieDetail';
+import { DefaultBtn } from '../utilities/styles';
 
 const SearchContentsContainer = styled.div`
     .movies-list-container {
@@ -13,7 +14,7 @@ const SearchContentsContainer = styled.div`
             border-right: 1px solid #666666;
             overflow-y: auto;
             white-space: nowrap;
-            height: 92vh;
+            height: calc(-100px + 97vh);
             position: relative;
 
             &::-webkit-scrollbar {
@@ -28,8 +29,7 @@ const SearchContentsContainer = styled.div`
                 background: #f1f1f1;
             }
             
-            .total-result,
-            .no-results {
+            .total-result {
                 padding: 35px 40px;
             }
 
@@ -47,34 +47,86 @@ const SearchContentsContainer = styled.div`
                 background-color: #f1f1f1;
             }
         }
+
+        .pagination {
+            display: flex;
+            padding: 5px 40px;
+
+            .current-page {
+                margin: auto;
+            }
+            .next-btn {
+                padding: 14px 30px;
+            }
+        }
     }
 `;
 
 type SearchContentsProps = {
-    results: OMDBResults | undefined;
+    results: OMDBResults;
+    searchYears: Array<number>;
+    page: number;
+    setPage: (page: number) => void;
 }
 
-const SearchContents: FC<SearchContentsProps> = ({ results }: SearchContentsProps) => {
-
+const SearchContents: FC<SearchContentsProps> = ({ results, searchYears, page, setPage }: SearchContentsProps) => {
     const [selectedMovie, setSelectedMovie] = useState<Search>();
-    const contentsData = results;
+    const filteredContetsData = useMemo(() => {
+         let filteredResults = results.Search.filter(r => searchYears[0] <= parseInt(r.Year) && parseInt(r.Year) <= searchYears[1]);
+        return filteredResults;
+    }, [searchYears, results]);
 
-  const handleMovieSelection = (selected: Search) => {
-    setSelectedMovie(selected);
-  };
+    const handleMovieSelection = (selected: Search) => {
+        setSelectedMovie(selected);
+    };
+
+    const handlePage = (mode: string, targetPage?: number) => {
+        switch (mode) {
+            case HANDLEPAGE.Previous:
+                setPage(page > 1 ? page - 1 : page);
+                break;
+            case HANDLEPAGE.Next:
+                setPage(page <= 100 ? page + 1 : page);
+                break;
+        }
+            
+    };
 
     return (
         <SearchContentsContainer>
             <div className="movies-list-container">
                 <div className="movies-list">
-                    <div className='total-result'>{contentsData?.totalResults ?? 0} RESULTS</div>
-                    {contentsData !== undefined && contentsData.Search?.length > 0 ? (
-                        contentsData.Search.map((o) => (
-                            <div key={o.imdbID} onClick={() => handleMovieSelection(o)} 
-                                className={o.imdbID === selectedMovie?.imdbID ? 'selected item' : 'item'}>
-                                <MovieThumbnail movie={o}></MovieThumbnail>
+                    <div className='total-result'>{results.totalResults ?? 0} RESULTS</div>
+                    {results.totalResults > 0 ? (
+                        <Fragment>
+                            {
+                                filteredContetsData.length > 0 ? (
+                                    filteredContetsData.map((o) => (
+                                        <div key={o.imdbID} onClick={() => handleMovieSelection(o)} 
+                                            className={o.imdbID === selectedMovie?.imdbID ? 'selected item' : 'item'}>
+                                            <MovieThumbnail movie={o}></MovieThumbnail>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <div className='no-results'>No Contents</div> 
+                                )
+                            }
+                            <div className="pagination">
+                                <DefaultBtn>
+                                        <button className='previous-btn' onClick={() => handlePage(HANDLEPAGE.Previous)}>
+                                            Previous Page
+                                        </button>
+                                </DefaultBtn>
+                                <div className='current-page'>
+                                    <span>Current page:{page}</span>
+                                </div>
+                                <DefaultBtn>
+                                        <button className='next-btn' onClick={() => handlePage(HANDLEPAGE.Next)}>
+                                            Next Page
+                                        </button>
+                                </DefaultBtn>
                             </div>
-                        ))
+                        </Fragment>
                     ) : (
                         <div className='no-results'>No Contents</div> 
                     )}
